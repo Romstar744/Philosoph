@@ -2,7 +2,7 @@ import java.util.concurrent.locks.ReentrantLock
 
 var countPhilosopher = 0
 
-class Philosopher(val id: Int, val leftFork: ReentrantLock, val rightFork: ReentrantLock) : Runnable {
+class Philosopher(val id: String, val leftFork: ReentrantLock, val rightFork: ReentrantLock) : Runnable {
     override fun run() {
         eat()
     }
@@ -38,14 +38,20 @@ class Philosopher(val id: Int, val leftFork: ReentrantLock, val rightFork: Reent
 
 fun main() {
     println("Сколько философов за круглым столом: ")
-    println("Введите целое число: ")
+    print("Введите целое число: ")
     countPhilosopher = enter().countPhilosopher
 
+    var name = Array(countPhilosopher) {""}
+    for (i in 0 until countPhilosopher){
+        print("Имя философа ${i+1}: ")
+        name[i] = readln()
+    }
+    println("_________________________")
     val forks = List(countPhilosopher) { ReentrantLock() }
 
     val philosophers = List(countPhilosopher) { id ->
         Philosopher(
-            id,
+            name[id],
             forks[id],
             forks[(id + 1) % forks.size]
         )
